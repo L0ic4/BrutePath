@@ -19,14 +19,14 @@ public class MultiThread {
         // save script start time
         long startTime = System.currentTimeMillis();
 
-        //init cached thread pool (dynamically manage thread)
+        //init cached thread pool (dynamically managed thread)
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         //read the content of the file
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
 
-            //test each line in thread pool
+            //test each line in cached thread pool
             while ((line = reader.readLine()) != null) {
                 String finalLine = line;
                 executorService.submit(() -> testUrlAndPrint(startTime, finalLine));
@@ -40,7 +40,7 @@ public class MultiThread {
 
     private static void testUrlAndPrint(Long startTime, String line) {
         try {
-            int statusCode = testUrl(MultiThread.url + line);
+            int statusCode = testUrl(url + line);
             if (statusCode != 404) {
                 System.out.println("find : " + url + line);
                 long endTime = System.currentTimeMillis();
@@ -50,7 +50,7 @@ public class MultiThread {
                 System.out.println("Temps d'exécution: " + executionTime + " millisecondes");
             }
         } catch (IOException e) {
-            System.err.println("Error checking URL: " + MultiThread.url + line);
+            System.err.println("Error checking URL: " + url + line);
             e.printStackTrace();
         }
     }
@@ -59,7 +59,7 @@ public class MultiThread {
         URL urlObj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("Connection", "keep-alive"); // Définir la connexion comme persistante
+        connection.setRequestProperty("Connection", "keep-alive"); // Using persistent HTTP connections
         return connection.getResponseCode();
     }
 }
