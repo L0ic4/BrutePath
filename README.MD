@@ -3,6 +3,7 @@
 ## _Java path brute force_
 
 BrutePath is a java script for brute forcing a path.
+It use cached thread pool to test the content of a word list
 
 ## Tech
 
