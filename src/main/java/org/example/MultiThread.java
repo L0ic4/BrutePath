@@ -16,16 +16,18 @@ public class MultiThread {
     //the word list
     private static final String FILE_NAME = "dir_list.txt";
 
+    //init logger to show things in console
     static Logger logger = Logger.getLogger(MultiThread.class.getName());
 
+    //the main method
     public static void main(String[] args) {
        
-
         logger.info("======================= BRUTE PATH ========================");
+
         // save script start time
         long startTime = System.currentTimeMillis();
 
-        //init cached thread pool (dynamically managed thread)
+        //init cached thread pool (dynamically managed thread) for multi threading
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         //read the content of the file
@@ -35,6 +37,7 @@ public class MultiThread {
             //test each line in cached thread pool
             while ((line = reader.readLine()) != null) {
                 String finalLine = line;
+                //auto managed thread 
                 executorService.submit(() -> testUrlAndPrint(startTime, finalLine));
             }
         } catch (IOException e) {
@@ -43,18 +46,21 @@ public class MultiThread {
         executorService.shutdown();
     }
 
-
+    //the method to show available url by testing it 
     private static void testUrlAndPrint(Long startTime, String line) {
         try {
+            //save status code by sending get to the url
             int statusCode = testUrl(URL + line);
+
+            //show available url
             if (statusCode != 404) {
                 logger.info("---------------------------------------------------");
                 logger.info("find : " + URL + line);
+
+                //show execution time
                 long endTime = System.currentTimeMillis();
-
                 long executionTime = endTime - startTime;
-
-                logger.info("Temps d'exécution: " + executionTime + " millisecondes");
+                logger.info("execution time: " + executionTime + " ms");
                 logger.info("---------------------------------------------------");
             }
         } catch (IOException e) {
@@ -63,6 +69,7 @@ public class MultiThread {
         }
     }
 
+    //The method to send get request in one url
     private static int testUrl(String url) throws IOException {
         URL urlObj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
