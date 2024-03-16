@@ -16,13 +16,9 @@ public class MultiThread {
     //the word list
     private static final String FILE_NAME = "dir_list.txt";
 
-    //init logger to show things in console
-    static Logger logger = Logger.getLogger(MultiThread.class.getName());
-
     //the main method
     public static void main(String[] args) {
-       
-        logger.info("======================= BRUTE PATH ========================");
+        System.out.println("======================= BRUTE PATH ========================");
 
         // save script start time
         long startTime = System.currentTimeMillis();
@@ -54,17 +50,17 @@ public class MultiThread {
 
             //show available url
             if (statusCode != 404) {
-                logger.info("---------------------------------------------------");
-                logger.info("find : " + URL + line);
+                System.out.println("---------------------------------------------------");
+                System.out.println("find : " + URL + line);
 
                 //show execution time
                 long endTime = System.currentTimeMillis();
                 long executionTime = endTime - startTime;
-                logger.info("execution time: " + executionTime + " ms");
-                logger.info("---------------------------------------------------");
+                System.out.println("execution time: " + executionTime + " ms");
+                System.out.println("---------------------------------------------------");
             }
         } catch (IOException e) {
-            logger.warning("Error checking URL: " + URL + line);
+            System.out.println("Error checking URL: " + URL + line);
             e.printStackTrace();
         }
     }
