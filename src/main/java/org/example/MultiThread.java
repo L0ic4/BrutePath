@@ -16,6 +16,8 @@ public class MultiThread {
     private static final String filename = "dir_list.txt";
 
     public static void main(String[] args) {
+
+        System.out.println("======================= BRUTE PATH ========================");
         // save script start time
         long startTime = System.currentTimeMillis();
 
@@ -42,12 +44,14 @@ public class MultiThread {
         try {
             int statusCode = testUrl(url + line);
             if (statusCode != 404) {
+                System.out.println("---------------------------------------------------");
                 System.out.println("find : " + url + line);
                 long endTime = System.currentTimeMillis();
 
                 long executionTime = endTime - startTime;
 
                 System.out.println("Temps d'exécution: " + executionTime + " millisecondes");
+                System.out.println("---------------------------------------------------");
             }
         } catch (IOException e) {
             System.err.println("Error checking URL: " + url + line);
