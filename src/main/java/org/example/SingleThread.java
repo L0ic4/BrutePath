@@ -5,21 +5,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Logger;
 
 public class SingleThread {
 
-    // the url to be tested
-    private static final String url = "http://127.0.0.1:5000/";
+     // the url to be tested
+     private static final String URL = "http://127.0.0.1:5000/";
 
-    //the word list
-    private static final String filename = "dir_list.txt";
+     //the word list
+     private static final String FILE_NAME = "dir_list.txt";
+
+      static Logger logger = Logger.getLogger(SingleThread.class.getName());
 
     public static void main(String[] args) throws IOException {
         // save script start time
         long startTime = System.currentTimeMillis();
 
         //read the content of the file
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             //test url one by one
             while ((line = reader.readLine()) != null) {
@@ -33,17 +36,17 @@ public class SingleThread {
 
     private static void testUrlAndPrint(Long startTime, String line) {
         try {
-            int statusCode = testUrl(SingleThread.url + line);
+            int statusCode = testUrl(URL + line);
             if (statusCode != 404) {
-                System.out.println("find : " + url + line);
+                logger.info("find : " + URL + line);
                 long endTime = System.currentTimeMillis();
 
                 long executionTime = endTime - startTime;
 
-                System.out.println("Temps d'exécution: " + executionTime + " millisecondes");
+                logger.info("Temps d'exécution: " + executionTime + " millisecondes");
             }
         } catch (IOException e) {
-            System.err.println("Error checking URL: " + SingleThread.url + line);
+            logger.warning("Error checking URL: " + URL + line);
             e.printStackTrace();
         }
     }
@@ -52,7 +55,7 @@ public class SingleThread {
         URL urlObj = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
         connection.setRequestMethod("GET");
-        connection.setRequestProperty("Connection", "keep-alive"); // Définir la connexion comme persistante
+        connection.setRequestProperty("Connection", "keep-alive"); // Using persistent HTTP connections
         return connection.getResponseCode();
     }
 }

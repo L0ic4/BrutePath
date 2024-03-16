@@ -7,17 +7,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class MultiThread {
     // the url to be tested
-    private static final String url = "http://127.0.0.1:5000/";
+    private static final String URL = "http://127.0.0.1:5000/";
 
     //the word list
-    private static final String filename = "dir_list.txt";
+    private static final String FILE_NAME = "dir_list.txt";
+
+    static Logger logger = Logger.getLogger(MultiThread.class.getName());
 
     public static void main(String[] args) {
+       
 
-        System.out.println("======================= BRUTE PATH ========================");
+        logger.info("======================= BRUTE PATH ========================");
         // save script start time
         long startTime = System.currentTimeMillis();
 
@@ -25,7 +29,7 @@ public class MultiThread {
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         //read the content of the file
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
 
             //test each line in cached thread pool
@@ -42,19 +46,19 @@ public class MultiThread {
 
     private static void testUrlAndPrint(Long startTime, String line) {
         try {
-            int statusCode = testUrl(url + line);
+            int statusCode = testUrl(URL + line);
             if (statusCode != 404) {
-                System.out.println("---------------------------------------------------");
-                System.out.println("find : " + url + line);
+                logger.info("---------------------------------------------------");
+                logger.info("find : " + URL + line);
                 long endTime = System.currentTimeMillis();
 
                 long executionTime = endTime - startTime;
 
-                System.out.println("Temps d'exécution: " + executionTime + " millisecondes");
-                System.out.println("---------------------------------------------------");
+                logger.info("Temps d'exécution: " + executionTime + " millisecondes");
+                logger.info("---------------------------------------------------");
             }
         } catch (IOException e) {
-            System.err.println("Error checking URL: " + url + line);
+            logger.warning("Error checking URL: " + URL + line);
             e.printStackTrace();
         }
     }
