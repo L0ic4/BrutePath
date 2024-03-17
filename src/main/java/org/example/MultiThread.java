@@ -9,30 +9,35 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MultiThread {
-    // the url to be tested
+    // The url to be tested
     private static final String URL = "http://127.0.0.1:5000/";
 
-    // the word list
+    // The word list
     private static final String FILE_NAME = "dir_list.txt";
 
-    // the main method
+    // The main method
     public static void main(String[] args) {
         System.out.println("======================= BRUTE PATH ========================");
 
-        // save script start time
+        // save start time
         long startTime = System.currentTimeMillis();
 
-        // init cached thread pool (dynamically managed thread) for multi threading
+        // init executorService that can dynamically create and manage threads based on
+        // the workload
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         // read the content of the file
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
 
-            // test each line in cached thread pool
+            /*
+             * Each line is submitted to the ExecutorService for processing by an available
+             * thread.
+             * As the CachedThreadPool can create new threads if necessary and reuse
+             * existing ones, each line is processed as soon as a thread is available.
+             */
             while ((line = reader.readLine()) != null) {
                 String finalLine = line;
-                // auto managed thread
                 executorService.submit(() -> testUrlAndPrint(startTime, finalLine));
             }
         } catch (IOException e) {
