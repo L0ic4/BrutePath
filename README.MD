@@ -1,17 +1,5 @@
 # 💀 BrutePath 🔒
 
-##### NAME
-
-NY TINA ANDRIANTSOA Fifaliana Loica
-
-##### MAIL
-
-hei.loica.2@gmail.com
-
-##### STD REF
-
-STD21044
-
 ## _Java path brute force_
 
 👉 BrutePath is a java script for Directory Brute Forcing
